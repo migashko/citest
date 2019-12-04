@@ -13,10 +13,21 @@ jobs:
     - name: show
       run: |
         cat README.md
-    - name: Create Pull Request (migashko)
-      uses: migashko/create-pull-request@v1-test
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        base: master
-        branch: mambaru
-        branch-suffix: none
+    
+    - name: Create Pull Request (octokit/request-action@v2.x)
+    - uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+          route: GET /repos/:repository/releases/latest
+          repository: ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo latest release: ${{ steps.get_latest_release.outputs.data }}"
+
+#    - name: Create Pull Request (migashko)
+#      uses: migashko/create-pull-request@v1-test
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+ #       base: master
+ #       branch: mambaru
+ #       branch-suffix: none
