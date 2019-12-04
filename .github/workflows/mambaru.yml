@@ -19,7 +19,39 @@ jobs:
           sudo apt-get install -y libboost-filesystem-dev libboost-date-time-dev libboost-regex-dev
           sudo apt-get install -y lcov
 
-      - uses: octokit/request-action@v2.x
+      - name: Генерация документации
+        run: |
+          make doc
+        
+      - name: Сборка
+        run: |
+          make coverage-report
+          
+      - name: Отчет о покрытии
+        run: |
+          pushd build
+            export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }}
+            bash <(curl -s https://codecov.io/bash)
+          popd
+        
+      - name: Публикация документации
+        run: |
+          git clone -b gh-pages https://${{ secrets.ACCESS_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git /tmp/gh-pages
+          docdir="$PWD/docs/html/"
+          pushd /tmp/gh-pages
+            git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
+            git config --global user.name "${GITHUB_ACTOR}"
+            rsync -a --update $docdir ./
+            git add --all
+            COMMIT_MESSAGE="Update pages on $(date +'%Y-%m-%d %H:%M:%S')"
+            git diff-index --quiet --cached HEAD -- && echo "No changes!" && exit 0 || echo $COMMIT_MESSAGE
+            git commit -m "${COMMIT_MESSAGE}"
+            git push https://${{ secrets.ACCESS_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git gh-pages:gh-pages
+          popd
+          date +"%F %X" >> ./.github/build_history.txt
+
+      - name: Плучение списка пул-реквестов mambaru
+        uses: octokit/request-action@v2.x
         id: list_pull_requests
         with:
           route: GET /repos/${{ github.repository }}/pulls
@@ -28,12 +60,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull request is exist
+      - name: Пул-реквестов mambaru уже создан
         if: contains(steps.list_pull_requests.outputs.data, 'id')==true
         run: |
           echo "Ну и ладно"
 
-      - uses: octokit/request-action@v2.x
+      - name: Создаем Пул-реквест mambaru
+        uses: octokit/request-action@v2.x
         id: create_pull_request
         if: contains(steps.list_pull_requests.outputs.data, 'id')==false
         with:
@@ -43,4 +76,3 @@ jobs:
           base: "master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
