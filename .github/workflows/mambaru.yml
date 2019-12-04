@@ -1,0 +1,22 @@
+name: C++ CI
+
+on:
+  push:
+    branches:
+      - mambaru
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: show
+      run: |
+        cat README.md
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        base: master
+        branch: mambaru
+        branch-suffix: none
