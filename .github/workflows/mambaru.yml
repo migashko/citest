@@ -14,10 +14,10 @@ jobs:
         id: create_pull_request
         with:
           route: POST /repos/${{ github.repository }}/pulls
-          - body: 
-              title: "The title of the new pull request"
-              head: "mambaru"
-              base: "master"
+          body: 
+            - title: "The title of the new pull request"
+            - head: "mambaru"
+            - base: "master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest release: ${{ steps.create_pull_request.outputs.data }}"
