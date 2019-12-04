@@ -9,9 +9,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Pull Request (octokit/request-action@v2.x)
-        uses: octokit/request-action@v2.x
+#      - uses: octokit/request-action@v2.x
+#        id: list_pull_requests
+#        with:
+#          route: POST /repos/${{ github.repository }}/pulls
+#          state: "open"
+#          head: "mambaru"
+#          maintainer_can_modify: true
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          
+#      - run: "Pull request list Length: ${{ steps.list_pull_requests.outputs.data.length }}"
+
+      - uses: octokit/request-action@v2.x
         id: create_pull_request
+        if: always()
         with:
           route: POST /repos/${{ github.repository }}/pulls
           title: "The title of the new pull request"
@@ -20,5 +32,6 @@ jobs:
           maintainer_can_modify: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - run: "echo latest release: ${{ steps.create_pull_request.outputs.data }}"
 
