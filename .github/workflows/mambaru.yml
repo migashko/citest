@@ -1,0 +1,20 @@
+name: C++ CI
+
+on:
+  push:
+    branches:
+      - mambaru
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Pull Request (octokit/request-action@v2.x)
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/${{ github.repository }}/pulls
+          title: "The title of the new pull request"
+          head: "mambaru"
+          base: "master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
