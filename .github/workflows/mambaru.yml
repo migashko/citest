@@ -9,21 +9,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-#      - uses: octokit/request-action@v2.x
-#        id: list_pull_requests
-#        with:
-#          route: POST /repos/${{ github.repository }}/pulls
-#          state: "open"
-#          head: "mambaru"
-#          maintainer_can_modify: true
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          
-#      - run: "Pull request list Length: ${{ steps.list_pull_requests.outputs.data.length }}"
+      - uses: octokit/request-action@v2.x
+        id: list_pull_requests
+        with:
+          route: POST /repos/${{ github.repository }}/pulls
+          state: "open"
+          head: "mambaru"
+          maintainer_can_modify: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull request is exist
+        if: ${{ steps.create_pull_request.outputs.data.length }} > 0
+        run: |
+          echo "Ну и ладно"
 
       - uses: octokit/request-action@v2.x
         id: create_pull_request
-        if: always()
+        if: ${{ steps.create_pull_request.outputs.data.length }} == 0
         continue-on-error: true
         with:
           route: POST /repos/${{ github.repository }}/pulls
