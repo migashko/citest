@@ -3,4 +3,4 @@ doc:
 
 coverage-report: 
 	echo "coverage-report"
-	exit 0
+	exit 1

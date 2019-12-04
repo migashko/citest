@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      
       - name: Установка пакетов
         run: |
           sudo locale-gen ru_RU
