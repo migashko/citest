@@ -1,0 +1,28 @@
+# gem install travis --no-rdoc --no-ri
+# travis.ruby2.1 lint [path to your .travis.yml]
+
+dist:     trusty
+sudo:     required
+
+language: cpp
+
+os:
+  - linux
+
+git:
+  submodules: false
+  
+compiler:
+  - g++
+  - clang++ 
+
+branches:
+  only:
+    - mambaru
+    
+script:
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - echo Hello!!! 
