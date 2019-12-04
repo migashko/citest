@@ -30,6 +30,8 @@ jobs:
           head: "mambaru"
           base: "master"
           maintainer_can_modify: true
+          conclusion: "success"
+          status: "completed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
