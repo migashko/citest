@@ -18,16 +18,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo -e ${{ Array(steps.list_pull_requests.outputs.data) }}
-          
       - name: Pull request is exist
-        if: steps.list_pull_requests.outputs.data[0].id != 0
+        if: contains(steps.list_pull_requests.outputs.data, "id")
         run: |
           echo "Ну и ладно"
 
       - uses: octokit/request-action@v2.x
         id: create_pull_request
-        if: steps.list_pull_requests.outputs.data[0].id == null
+        if: !contains(steps.list_pull_requests.outputs.data, "id")
         continue-on-error: true
         with:
           route: POST /repos/${{ github.repository }}/pulls
