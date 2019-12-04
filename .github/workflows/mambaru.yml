@@ -18,6 +18,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: echo ${{steps.list_pull_requests.outputs.data}}
+          
       - name: Pull request is exist
         if: steps.list_pull_requests.outputs.data[0].id != 0
         run: |
