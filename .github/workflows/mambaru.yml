@@ -18,6 +18,8 @@ jobs:
           maintainer_can_modify: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: "echo LIST_PULL_REQUESTS: ${{ steps.list_pull_requests.outputs.data }}"
           
       - name: Pull request is exist
         if: steps.list_pull_requests.outputs.data.length > 0
