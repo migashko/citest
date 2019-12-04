@@ -14,7 +14,7 @@ jobs:
         id: get_latest_release
         with:
           route: GET /repos/:owner/:repo/pulls
-          owner: ${{ github.owner }}
+          owner: ${{ github.actor }}
           repo:  ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
