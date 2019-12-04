@@ -19,7 +19,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: "echo LIST_PULL_REQUESTS: ${{ steps.list_pull_requests.outputs.data.length }}"
+      - run: "echo -e LIST_PULL_REQUESTS: (${{ steps.list_pull_requests.outputs.data.length }})"
           
       - name: Pull request is exist
         if: steps.list_pull_requests.outputs.data.length > 0
