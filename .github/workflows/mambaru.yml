@@ -35,6 +35,8 @@ jobs:
     
       - name: Ну и ладно
         if: failure()
-
-      - run: "echo latest release: ${{ steps.create_pull_request.outputs.data }}"
+        run: |
+          echo "Ну и ладно"
+        
+#      - run: "echo latest release: ${{ steps.create_pull_request.outputs.data }}"
 
