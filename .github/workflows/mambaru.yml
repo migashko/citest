@@ -12,7 +12,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: list_pull_requests
         with:
-          route: POST /repos/${{ github.repository }}/pulls
+          route: GET /repos/${{ github.repository }}/pulls
           state: "open"
           head: "mambaru"
           maintainer_can_modify: true
