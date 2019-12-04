@@ -13,8 +13,8 @@ jobs:
     - name: show
       run: |
         cat README.md
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v1
+    - name: Create Pull Request (migashko)
+      uses: migashko/create-pull-request@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         base: master
