@@ -15,21 +15,17 @@ jobs:
           route: GET /repos/${{ github.repository }}/pulls
           state: "open"
           head: "mambaru"
-          maintainer_can_modify: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: |
-          echo -e LIST_PULL_REQUESTS: ${{ steps.list_pull_requests.outputs.data.size() }}
-          
       - name: Pull request is exist
-        if: steps.list_pull_requests.outputs.data.length > 0
+        if: steps.list_pull_requests.outputs.data[0] != null
         run: |
           echo "Ну и ладно"
 
       - uses: octokit/request-action@v2.x
         id: create_pull_request
-        if: steps.list_pull_requests.outputs.data.length == 0
+        if: steps.list_pull_requests.outputs.data[0] == null
         continue-on-error: true
         with:
           route: POST /repos/${{ github.repository }}/pulls
