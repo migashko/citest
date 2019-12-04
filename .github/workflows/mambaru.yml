@@ -9,12 +9,39 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Pull Request (octokit/request-action@v2.x)
-        uses: octokit/request-action@v2.x
+      - uses: octokit/request-action@v2.x
+        id: list_pull_requests
+        with:
+          route: GET /repos/${{ github.repository }}/pulls
+          state: "open"
+          head: "mambaru"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull request is exist
+        if: contains(steps.list_pull_requests.outputs.data, 'id')
+        run: |
+          echo "Ну и ладно"
+
+      - uses: octokit/request-action@v2.x
+        id: create_pull_request
+        if: contains(steps.list_pull_requests.outputs.data, 'id')==false
+        continue-on-error: true
         with:
           route: POST /repos/${{ github.repository }}/pulls
           title: "The title of the new pull request"
           head: "mambaru"
           base: "master"
+          maintainer_can_modify: true
+          conclusion: "success"
+          status: "completed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Ну и ладно
+        if: failure()
+        run: |
+          echo "Ну и ладно"
+        
+#      - run: "echo latest release: ${{ steps.create_pull_request.outputs.data }}"
+
