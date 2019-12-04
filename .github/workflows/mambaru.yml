@@ -11,11 +11,10 @@ jobs:
     steps:
       - name: Create Pull Request (octokit/request-action@v2.x)
         uses: octokit/request-action@v2.x
-        id: get_latest_release
+        id: create_pull_request
         with:
           route: POST /repos/${{ github.repository }}/pulls
-          title: "The title of the new pull request"
-          head:  "mambaru"
+          input: '{"title": "The title of the new pull request","head":"mambaru","base":"master"}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest release: ${{ steps.get_latest_release.outputs.data }}"
+      - run: "echo latest release: ${{ steps.create_pull_request.outputs.data }}"
