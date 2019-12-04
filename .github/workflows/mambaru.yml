@@ -13,9 +13,9 @@ jobs:
         uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
-          route: GET /repos/${{ github.repository }}/pulls
-          owner: ${{ github.actor }}
-          repo:  ${{ github.repository }}
+          route: POST /repos/${{ github.repository }}/pulls
+          title: "The title of the new pull request"
+          head:  "mambaru"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo latest release: ${{ steps.get_latest_release.outputs.data }}"
