@@ -22,7 +22,6 @@ jobs:
         echo "unzip boost"
         tar -xf boost_1_73_0.tar.gz
         push boost_1_73_0
-        tar -xvf boost_1_73_0.tar.gz
           echo "bootstrap boost"
           ./bootstrap.sh
           echo "install boost"
