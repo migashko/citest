@@ -23,3 +23,10 @@ jobs:
     - name: show
       run: |
         cat README.md
+    - name: build
+      run: |
+        mkdir build
+        pushd build
+          cmake ..
+          make
+        popd
