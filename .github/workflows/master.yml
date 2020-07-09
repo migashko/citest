@@ -19,6 +19,7 @@ jobs:
         sudo apt-get install -y lcov
         ./boost-setup.sh
         echo $PATH
+      working-directory: ./.github/workflows
     - name: show
       run: |
         cat README.md
